@@ -32,6 +32,10 @@ local function applyPowerBonus(self) --Directly copied scaling from mindpowerbon
 	return self:combatScale(self:getTalentLevel(self.T_MIC_HOT_BURNY_FLAMES) + self:getTalentLevel(self.T_MIC_ERODE) + self:getTalentLevel(self.T_MIC_ERASE) + self:getTalentLevel(self.T_MIC_DOOOOM), 1, 1, 25, 25, 0.75)
 end
 
+--Little bit of reasoning here, these 3 talents hit Anguished's 3 main damage types (I removed mind damage as a damage type in 2.0.0).
+--Erode works as vim regen
+--Hellfire works as a resistance stripper, which is useful for any mage imo (though I would argue that anguished doesn't have this problem so much)
+--Erase strips sustains
 
 newTalent { --Erode
     name = "Erode", short_name = "MIC_ERODE",
@@ -56,11 +60,7 @@ newTalent { --Erode
         local tg = {type = "hit", range = range}
         local x, y, target = self:getTarget(tg)
         if not target or not self:canProject(tg, x, y) then return nil end
-        if target:canBe("disease") then
-            target:setEffect(target.EFF_MIC_EROSION, talDur, {power = talPower, apply_power = 100, dam = talDam, src = self})
-        else
-            game.logSeen(target, "%s resists the erosion!", target.name:capitalize())
-        end
+        target:setEffect(target.EFF_MIC_EROSION, talDur, {power = talPower, apply_power = self:combatSpellpower() + powerBoost, dam = talDam, src = self})
         game:playSoundNear(self, "talents/slime")
         return true
     end,
@@ -141,7 +141,7 @@ newTalent {
         local tg = {type = "hit", range = range}
         local x, y, target = self:getTarget(tg)
         if not target or not self:canProject(tg, x, y) then return nil end
-        target:setEffect(target.EFF_MIC_ERASURE, talDur, {apply_power = self:combatSpellpower() + powerBoost, dam = talDam, doErase = self:getTalentLevel(t) >= 4 and true or false, src = self})
+        target:setEffect(target.EFF_MIC_ERASURE, talDur, {apply_power = self:combatSpellpower() + powerBoost, dam = talDam, doErase = self:getTalentLevel(t) >= 3 and true or false, src = self})
 		local effs = {}
 
 		for eff_id, p in pairs(target.tmp) do --Check for beneficial
@@ -165,7 +165,7 @@ newTalent {
         local powerBoost = applyPowerBonus(self)
 		local numOfEff = t.getEffRemoved(self, t)
 		return([[Erase some of your target away, removing %d beneficial effects from them upon cast and dealing %0.1f darkness damage per turn for %d turns.
-If the talent level is 4 or greater, Erase will also remove one sustain per turn on the affected target. The darkness damage per turn will scale with your #VIOLET#spellpower.#WHITE#
+If the talent level is 3 or greater, Erase will also remove one sustain per turn on the affected target. The darkness damage per turn will scale with your #VIOLET#spellpower.#WHITE#
 
 Additionally, every point put into talents in the Doom tree will increase the apply power of all talents within the tree. (Currently +%d)]]):format(numOfEff, damDesc(self, DamageType.DARKNESS, talDam), talDur, powerBoost)
 	end,

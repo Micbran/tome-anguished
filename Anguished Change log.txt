@@ -1,0 +1,57 @@
+1.0.1: Vim things
+Anguish vim cost lowered from 25 to 15
+Anguish Psi cost increased from 15 to 25
+Erode's cooldown turned to a scaling cooldown based off talent level (Limit of 3. scales from 20 to 5)
+Swapped Hellfire's place in the tree with Erode (1st and second spot).
+Erode's vim cost reduced from 4 to 0.
+Hellfire's cooldown increased from 4 to 6.
+Siphon's Vim Drain amount scaling increased by around 33%.
+Footlocks Psi cost reduced from 40 to 35.
+
+1.0.2: I made a mistake
+Erode and Hellfire now have the proper talent reqs
+Players no longer start with a point in hellfire and will instead start with a point in Erode
+Icons should work. (stupid capital letters)
+
+1.0.3: Dark Charge Doesn't Suck (as much) and the balance patch
+Hellfire's damage scaling has been increased by 25%ish
+Balance of Power's spellpower and mindpower bonus has been changed to a more linear scaling.
+Hellfire's cooldown and vim cost upped. 5 -> 12, 5 -> 10
+Erase's number of eff's removed actually makes sense now.
+Icons have been replaced with smaller versions of themselves and some icons have been changed, so file size will be smaller.
+Dusk Bringer has been changed:
+	The vim drain has been decreased from 15 to 12.
+	Now has a maximum radius of 8. Radius starts at 2 and increases by 1 for every turn charged. No longer limited by talent level.
+	Damage and damage scaling with charge have been adjusted to scale better with talent level.
+Erode's damage has been brought more in line with hellfires.
+Erode's cooldown scaling decreased.
+Erode now has a vim cost, though I doubt it will be affected much.
+Siphon's psi drain lowered from 7 to 6
+Cauterize Lips duration scaling (on the silence) reduced by a little.
+Bug Fixes:
+Hellfire should no longer do weird things with spellshock and -all resist. 
+No more errors when stepping on damaging traps.
+Mangle's particle effects should actually work now (and not throw errors).
+Erase should not error when cast on a target who was a lower number of possible effs to be removed than the possible number of effs that can be removed.
+
+1.0.4: Now with less Errors!
+One bugfix: Stepping on traps will no longer give you an error.
+
+1.0.5: More fixes!
+Power of the Eternals now does not use the default icon when it is in the buff bar.
+Changed Mindburn's desc to use decimals instead of a whole number.
+Choke, Cauterize Lips and Searing Pain's descriptions all fixed (clarity issue).
+Dusk Bringer's description now displays the correct damage amount.
+Chaos's damage type that it deals upon kill has been changed to darkness.
+Talents that applied a drain to either vim or psi have been updated to use the drain_resource parameter.
+Fixed Siphon's desc improperly saying it drained 7 psi when it really drained 6.
+Added a % sign in Erode's effect desc.
+Life Shield now tells you the amount of shield you would get in the desc.
+
+1.0.6: Typo fix
+Oops.
+
+2.0.0: Overhaul
+Erode no longer checks disease resistance and its apply power is no longer 100, but your SP.
+Added extra documentation to some of the code, mainly for myself
+Erase now strips sustains at TL 3
