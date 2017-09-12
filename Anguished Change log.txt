@@ -55,9 +55,12 @@ Oops.
 Erode no longer checks disease resistance and its apply power is no longer 100, but your SP.
 Erode cooldown scaling has been changed, from min 3, 20 to 10 to min 6, 15 to 8
 Erode duration is now fixed at 5.
+Erode no longer slows global speed
 Hellfire now capped at -40 all res maximum, desc updated to match
 Hellfire duration overall lower but cooldown has been decreased slightly
 Added extra documentation to some of the code, mainly for myself
 Erase now strips sustains at TL 3
 Erase upper damage scaling lowered from 200 to 150 at 100SP and TL 5
 Erase's min cooldown has been increased to 3 from 2.
+Doom now slows global speed like erode used to.
+Cleaned up Unnatural Limit's desc a bit

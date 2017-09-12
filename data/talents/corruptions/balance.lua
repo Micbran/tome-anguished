@@ -200,7 +200,7 @@ newTalent{
         talDur = t.getDuration(self, t)
         if talAll == nil then talAll = 0 end
         if talDur == nil then talDur = 0 end
-        return ([[You can activate this talent to push yourself to the absolute limit, increasing your all damage by up to %d%%. Also, your vim, psi and life will all be set to their maximum values, but upon the effect's expiry, your vim and psi will be set to 10%% of their maximum values and your life will be set to 20%%.
+        return ([[You muster up energy to push yourself past the limit of your body, increasing your all damage by up to %d%%and setting your vim, psi and life to their maximum values. Upon the effect's expiry, your vim and psi will be set to 10%% of their maximum values and your life will be set to 20%%.
 The all damage bonus will increase based on how low your vim and psi are when you activate the talent.
 The duration will be increased based on how low your life is upon activation.
 Current all damage bonus: %d%%

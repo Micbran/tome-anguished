@@ -64,26 +64,26 @@ newEffect { --Hellfire eff
         self:removeTemporaryValue("resists", eff.resid)
     end,
 }
-
+--removing GS malus from this and swapping it to doom
 newEffect {
     name = "MIC_EROSION", image = "talents/MIC_ERODE.png",
     desc = "Erosion",
-    long_desc = function(self, eff) return("The target is inflicted with a eroding curse, reducing global speed by %d%% and dealing %0.1f blight damage per turn."):format(eff.power*100, eff.dam) end,
+    long_desc = function(self, eff) return("The target is inflicted with a eroding curse, dealing %0.1f blight damage per turn."):format(eff.dam) end,
     type = "magical",
     subtype = {blight = true},
     status = "detrimental",
-    parameters = {power = 0.1, dam = 20, src = nil},
-    on_gain = function(self, err) return "#Target# is slowing down.", "+Erosion" end,
+    parameters = {dam = 20, src = nil},
+    on_gain = function(self, err) return "#Target# is eroding down.", "+Erosion" end,
     on_lose = function(self, err) return "#Target# is back to normal.", "-Erosion" end,
     activate = function(self, eff)
-        eff.speedid = self:addTemporaryValue("global_speed_add", -eff.power)
+        --eff.speedid = self:addTemporaryValue("global_speed_add", -eff.power)
         eff.particles = self:addParticles(engine.Particles.new("generic_power", 1, {rm=30, rM=40, gm=200, gM=225, bm=5, bM=10, am=200, aM=255}))    end,
     on_timeout = function(self, eff)
         DamageType:get(DamageType.DRAIN_VIM).projector(eff.src, self.x, self.y, DamageType.DRAIN_VIM, eff.dam)
     end,
     deactivate = function(self, eff)
         self:removeParticles(eff.particles)
-        self:removeTemporaryValue("global_speed_add", eff.speedid)
+        --self:removeTemporaryValue("global_speed_add", eff.speedid)
     end,
 }
 
@@ -112,24 +112,25 @@ newEffect {
     end,
 
 }
-
 newEffect {
     name = "MIC_DOOOM", image = "talents/MIC_DOOOOM.png",
     desc = "Doom",
-    long_desc = function(self, eff) return ("The target has been doomed! They are taking %0.1f blight damage per turn and the length of all neagtive effects on them have been extended."):format(eff.dam) end,
+    long_desc = function(self, eff) return ("The target has been doomed! They are taking %0.1f blight damage per turn and their global speed has been reduced by %d%%"):format(eff.dam, eff.power*100) end,
     type = "magical",
     subtype = {blight = true},
     status = "detrimental",
-    parameters = {dam = 20, src = nil},
+    parameters = {power = 0.1, dam = 20, src = nil},
     on_gain = function(self, err) return "DOOOOOOOOOOOOOOOOOM", "+DOOOOOOOOOM" end,
     on_lose = function(self, err) return "#Target# feels less doomed.", "-Doom" end,
     activate = function(self, eff)
+        eff.speedid = self:addTemporaryValue("global_speed_add", -eff.power)
         --eff.particles = self:addParticles(engine.Particles.new())
     end,
     on_timeout = function(self, eff)
         DamageType:get(DamageType.BLIGHT).projector(eff.src, self.x, self.y, DamageType.BLIGHT, eff.dam)
     end,
     deactivate = function(self, eff)
+        self:removeTemporaryValue("global_speed_add", eff.speedid)
         --self:removeParticles(eff.particles)
     end,
 }

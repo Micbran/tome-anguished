@@ -49,7 +49,6 @@ newTalent { --Erode
     tactical = {ATTACK = {BLIGHT = 2}, SLOW = 2},
     direct_hit = true,
     requires_target = true,
-    getPower = function(self, t) return self:combatTalentSpellDamage(t, 0.1, 0.5) end, --Global speed is a double < 1.
     getDamage = function(self, t) return self:combatTalentSpellDamage(t, 10, 100) end, --Damage might be on the high end, but it does have a decent cooldown
 	getDur = function(self, t) return 5 end, --I gave up on scaling this, too much work it works as a damage multiplier.and also increases GS malus
     action = function(self, t)
@@ -69,11 +68,11 @@ newTalent { --Erode
         local talDam = t.getDamage(self, t)
         local talDur = t.getDur(self, t)
 		powerBoost = applyPowerBonus(self)
-        return([[Inflict a disease designed to ruin upon your target, reducing their global speed by %d%% and dealing %0.1f blight damage per turn for %d turns.
+        return([[Inflict a disease designed to ruin upon your target, dealing %0.1f blight damage per turn for %d turns.
 The blight damage will additionally drain vim, scaled by the target's rank.
 The damage and global speed slow will scale with your #VIOLET#spellpower.#WHITE# This talent uses spell crit, increasing the damage dealt.
 
-Additionally, every point put into talents in the Doom tree will increase the apply power of all talents within the tree. (Currently +%d)]]):format(talPower*100, damDesc(self, DamageType.BLIGHT, talDam), talDur, powerBoost)
+Additionally, every point put into talents in the Doom tree will increase the apply power of all talents within the tree. (Currently +%d)]]):format(damDesc(self, DamageType.BLIGHT, talDam), talDur, powerBoost)
     end,
 }
 
@@ -185,6 +184,7 @@ newTalent {
     direct_hit = true,
     requires_target = true,
 	target = function(self, t) return {type = "hit", range = self:getTalentRange(t), talent = t} end,
+	getPower = function(self, t) return self:combatTalentSpellDamage(t, 0.1, 0.4) end, --Global speed is a double < 1.
     getDamage = function(self, t) return self:combatTalentSpellDamage(t, 30, 170) end,
 	getDur = function(self, t) return math.floor(self:combatTalentLimit(t, 12, 5, 8)) end, --untouched, even though im pretty sure this scaling is all sorts of wrong
 	getEffectExtension = function(self, t) return self:combatTalentLimit(t, 2, 4, 6) end,
@@ -192,6 +192,7 @@ newTalent {
 		local talDam = t.getDamage(self, t)
 		local talDur = t.getDur(self, t)
 		local powerBoost = applyPowerBonus(self)
+		local talPower = t.getPower(self, t)
 		local tg = self:getTalentTarget(t)
 		local x, y = self:getTarget(tg)
 		if not x or not y then return nil end
@@ -204,7 +205,7 @@ newTalent {
 					p.dur = math.min(p.dur*2, p.dur + t.getEffectExtension(self, t)) --Extend effect. Check so that it wont go too far
 				end
 			end
-			target:setEffect(target.EFF_MIC_DOOOM, talDur, {apply_power = self:combatSpellpower() + powerBoost, dam = talDam, src = self})
+			target:setEffect(target.EFF_MIC_DOOOM, talDur, {apply_power = self:combatSpellpower() + powerBoost, dam = talDam, src = self, power = talPower})
 		end)
 		local _ _, x, y = self:canProject(tg, x, y)
 		game.level.map:particleEmitter(x, y, tg.radius, "circle", {oversize=0.7, g=100, r=100, a=90, limit_life=8, appear=8, speed=2, img="blight_circle", radius=self:getTalentRadius(t)})
@@ -216,9 +217,10 @@ newTalent {
 		local dam = t.getDamage(self, t)
 		local dur = t.getDur(self, t)
 		local powerBoost = applyPowerBonus(self)
-		return ([[Seal your targets DOOOOOOOOOM by extending the length of all status effects on them by up to %d (but never to twice the effects duration) and applying a new debuff (after the extension, not before) that deals %0.1f blight damage per turn for %d turns.
+		local slowAmount = t.getPower(self, t)
+		return ([[Seal your targets DOOOOOOOOOM by extending the length of all status effects on them by up to %d (but never to twice the effects duration) and applying a new debuff (after the extension, not before) that deals %0.1f blight damage per turn and reduces their global speed by %d%% for %d turns.
 The damage per turn will scale with your #VIOLET#spellpower.#WHITE#
 
-Additionally, every point put into talents in the Doom tree will increase the apply power of all talents within the tree. (Currently +%d)]]):format(numOfEff, damDesc(self, DamageType.BLIGHT, dam), dur, powerBoost)
+Additionally, every point put into talents in the Doom tree will increase the apply power of all talents within the tree. (Currently +%d)]]):format(numOfEff, damDesc(self, DamageType.BLIGHT, dam), slowAmount*100, dur, powerBoost)
 	end,
 }
