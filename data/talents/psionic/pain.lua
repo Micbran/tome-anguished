@@ -161,7 +161,7 @@ newTalent { --Searing Pain
         talPower = t.getPower(self, t)
     return([[Unleash a ball of red, hot pain in radius %d, dealing %0.1f fire damage and attempting to apply confusion (power %d), using the higher of spellpower or mindpower for application, in the area.
 Damage scales with your #VIOLET#spellpower#WHITE# and #GOLD#mindpower#WHITE#, whilist the confusion power will scale ONLY with your #GOLD#mindpower.#WHITE#
-#RED#This talent uses mind critical strike chance.]]):format(talRadius, damDesc(self, DamageType.FIRE, talDamage), talPower) end,
+#RED#This talent uses mind critical strike chance.#WHITE#]]):format(talRadius, damDesc(self, DamageType.FIRE, talDamage), talPower) end,
 }
 
 newTalent {

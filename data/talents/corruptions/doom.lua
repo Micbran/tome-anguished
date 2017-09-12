@@ -38,7 +38,7 @@ end
 --Erase strips sustains
 
 newTalent { --Erode
-    name = "Erode", short_name = "MIC_ERODE",
+    name = "Consumptive Blight", short_name = "MIC_ERODE",
     type = {"corruption/doom", 1},
     require = mag_req1,
     points = 5,
@@ -46,7 +46,7 @@ newTalent { --Erode
     cooldown = function(self, t) return self:combatTalentLimit(t, 6, 15, 8) end,
     vim = 5,
     range = 10,
-    tactical = {ATTACK = {BLIGHT = 2}, SLOW = 2},
+    tactical = {ATTACK = {BLIGHT = 2}},
     direct_hit = true,
     requires_target = true,
     getDamage = function(self, t) return self:combatTalentSpellDamage(t, 10, 100) end, --Damage might be on the high end, but it does have a decent cooldown
@@ -68,9 +68,9 @@ newTalent { --Erode
         local talDam = t.getDamage(self, t)
         local talDur = t.getDur(self, t)
 		powerBoost = applyPowerBonus(self)
-        return([[Inflict a disease designed to ruin upon your target, dealing %0.1f blight damage per turn for %d turns.
+        return([[Afflict your target with a blight that saps their life from them, dealing %0.1f blight damage per turn for %d turns.
 The blight damage will additionally drain vim, scaled by the target's rank.
-The damage and global speed slow will scale with your #VIOLET#spellpower.#WHITE# This talent uses spell crit, increasing the damage dealt.
+The damage will scale with your #VIOLET#spellpower.#WHITE# This talent uses spell crit, increasing the damage dealt.
 
 Additionally, every point put into talents in the Doom tree will increase the apply power of all talents within the tree. (Currently +%d)]]):format(damDesc(self, DamageType.BLIGHT, talDam), talDur, powerBoost)
     end,
@@ -180,7 +180,7 @@ newTalent {
     cooldown = 30,
     vim = 20,
     range = 10,
-    tactical = {ATTACK = {BLIGHT = 2}},
+    tactical = {ATTACK = {BLIGHT = 1}, SLOW = 2},
     direct_hit = true,
     requires_target = true,
 	target = function(self, t) return {type = "hit", range = self:getTalentRange(t), talent = t} end,

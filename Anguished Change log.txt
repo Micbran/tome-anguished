@@ -52,6 +52,7 @@ Life Shield now tells you the amount of shield you would get in the desc.
 Oops.
 
 2.0.0: Overhaul
+Erode has a new name: Consumptive Blight
 Erode no longer checks disease resistance and its apply power is no longer 100, but your SP.
 Erode cooldown scaling has been changed, from min 3, 20 to 10 to min 6, 15 to 8
 Erode duration is now fixed at 5.
