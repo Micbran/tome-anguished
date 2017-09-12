@@ -51,7 +51,7 @@ newEffect { --Hellfire eff
     end,
     on_timeout = function(self, eff)
         if eff.resid then self:removeTemporaryValue("resists", eff.resid) end
-        eff.resid = self:addTemporaryValue("resists", {all = -eff.power * eff.numOfTurns}) --Still not sure.
+        eff.resid = self:addTemporaryValue("resists", {all = math.max(-eff.power * eff.numOfTurns, -40)}) --Still not sure.Capped at 40
         eff.numOfTurns = eff.numOfTurns + 1
         DamageType:get(DamageType.MIC_HELLFIRE).projector(eff.src, self.x, self.y, DamageType.MIC_HELLFIRE, eff.dam)
     end,

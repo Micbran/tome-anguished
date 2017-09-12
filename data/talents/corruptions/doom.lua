@@ -43,15 +43,15 @@ newTalent { --Erode
     require = mag_req1,
     points = 5,
     random_ego = "attack",
-    cooldown = function(self, t) return self:combatTalentLimit(t, 3, 20, 10) end,
+    cooldown = function(self, t) return self:combatTalentLimit(t, 6, 15, 8) end,
     vim = 5,
     range = 10,
     tactical = {ATTACK = {BLIGHT = 2}, SLOW = 2},
     direct_hit = true,
     requires_target = true,
     getPower = function(self, t) return self:combatTalentSpellDamage(t, 0.1, 0.5) end, --Global speed is a double < 1.
-    getDamage = function(self, t) return self:combatTalentSpellDamage(t, 10, 100) end,
-	getDur = function(self, t) return math.floor(self:combatTalentLimit(t, 12, 5, 8)) end,
+    getDamage = function(self, t) return self:combatTalentSpellDamage(t, 10, 100) end, --Damage might be on the high end, but it does have a decent cooldown
+	getDur = function(self, t) return 5 end, --I gave up on scaling this, too much work it works as a damage multiplier.and also increases GS malus
     action = function(self, t)
         local talPower = t.getPower(self, t)
         local talDam = self:spellCrit(t.getDamage(self, t))
@@ -83,15 +83,15 @@ newTalent { --Hellfire
     require = mag_req2,
     points = 5,
     random_ego = "attack",
-    cooldown = 12,
+    cooldown = 9, --static
     vim = 10,
     range = 10,
     direct_hit = true,
     requires_target = true,
     tactical = {ATTACK = {FIRE = 2}},
-    getPower = function(self, t) return self:combatTalentSpellDamage(t, 4, 17) end,
-    getDuration = function(self, t) return math.floor(self:combatTalentLimit(t, 12, 5, 8)) end,
-    getDamage = function(self, t) return self:combatTalentSpellDamage(t, 10, 100) end,
+    getPower = function(self, t) return self:combatTalentSpellDamage(t, 4, 17) end, --power is how much all res is burned
+    getDuration = function(self, t) return math.floor(self:combatTalentLimit(t, 8, 4, 6)) end,
+    getDamage = function(self, t) return self:combatTalentSpellDamage(t, 10, 100) end, --all talents do around the same amount of damage per tick
     action = function(self, t)
         local range = self:getTalentRange(t)
         local tg = {type = "hit", range = range}
@@ -112,6 +112,7 @@ newTalent { --Hellfire
         local powerBoost = applyPowerBonus(self)
         return([[Project very hot flames upon your target for %d turns, causing them to burn for half fire damage (%0.1f) and half darkness damage (%0.1f) while reducing their all resistance by %0.1f%% for each turn they burn.
 The damage, apply chance and all resistance reduction will scale with your #VIOLET#spellpower.#WHITE# This talent uses spell crit, increasing the damage dealt.
+The all resistance reduction will stack to a maximum of -40%%.
 
 Additionally, every point put into talents in the Doom tree will increase the apply power of all talents within the tree. (Currently +%d)]]):format(talDur, damDesc(self, DamageType.FIRE, talDam/2), damDesc(self, DamageType.DARKNESS, talDam/2), talPower, powerBoost)
     end,
@@ -129,9 +130,9 @@ newTalent {
     tactical = {ATTACK = {DARKNESS = 2}},
     direct_hit = true,
     requires_target = true,
-    getDamage = function(self, t) return self:combatTalentSpellDamage(t, 30, 200) end,
-	getDur = function(self, t) return math.floor(self:combatTalentLimit(t, 6, 2, 5)) end,
-	getEffRemoved = function(self, t) return self:combatTalentLimit(t, 5, 1, 2) end,
+    getDamage = function(self, t) return self:combatTalentSpellDamage(t, 30, 150) end, --much higher damage, probably need to lower
+	getDur = function(self, t) return math.floor(self:combatTalentLimit(t, 6, 3, 5)) end,
+	getEffRemoved = function(self, t) return self:combatTalentLimit(t, 4, 1, 3) end,
     action = function(self, t)
         local talDam = self:spellCrit(t.getDamage(self, t))
         local talDur = t.getDur(self, t)
@@ -170,7 +171,7 @@ If the talent level is 3 or greater, Erase will also remove one sustain per turn
 Additionally, every point put into talents in the Doom tree will increase the apply power of all talents within the tree. (Currently +%d)]]):format(numOfEff, damDesc(self, DamageType.DARKNESS, talDam), talDur, powerBoost)
 	end,
 }
-
+--considering either giving an on expiration bonus or a moving the GS malus to this talent and putting something extra on erosion
 newTalent {
 	name = "Doom", short_name = "MIC_DOOOOM",
 	type = {"corruption/doom", 4},
@@ -185,7 +186,7 @@ newTalent {
     requires_target = true,
 	target = function(self, t) return {type = "hit", range = self:getTalentRange(t), talent = t} end,
     getDamage = function(self, t) return self:combatTalentSpellDamage(t, 30, 170) end,
-	getDur = function(self, t) return math.floor(self:combatTalentLimit(t, 12, 5, 8)) end,
+	getDur = function(self, t) return math.floor(self:combatTalentLimit(t, 12, 5, 8)) end, --untouched, even though im pretty sure this scaling is all sorts of wrong
 	getEffectExtension = function(self, t) return self:combatTalentLimit(t, 2, 4, 6) end,
 	action = function(self, t)
 		local talDam = t.getDamage(self, t)

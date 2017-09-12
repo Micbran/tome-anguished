@@ -29,7 +29,7 @@ Erode now has a vim cost, though I doubt it will be affected much.
 Siphon's psi drain lowered from 7 to 6
 Cauterize Lips duration scaling (on the silence) reduced by a little.
 Bug Fixes:
-Hellfire should no longer do weird things with spellshock and -all resist. 
+Hellfire should no longer do weird things with spellshock and -all resist.
 No more errors when stepping on damaging traps.
 Mangle's particle effects should actually work now (and not throw errors).
 Erase should not error when cast on a target who was a lower number of possible effs to be removed than the possible number of effs that can be removed.
@@ -53,5 +53,11 @@ Oops.
 
 2.0.0: Overhaul
 Erode no longer checks disease resistance and its apply power is no longer 100, but your SP.
+Erode cooldown scaling has been changed, from min 3, 20 to 10 to min 6, 15 to 8
+Erode duration is now fixed at 5.
+Hellfire now capped at -40 all res maximum, desc updated to match
+Hellfire duration overall lower but cooldown has been decreased slightly
 Added extra documentation to some of the code, mainly for myself
 Erase now strips sustains at TL 3
+Erase upper damage scaling lowered from 200 to 150 at 100SP and TL 5
+Erase's min cooldown has been increased to 3 from 2.
