@@ -166,7 +166,6 @@ newTalent { --Searing Pain
 Damage scales with your #VIOLET#spellpower#WHITE# and #GOLD#mindpower#WHITE#, whilist the confusion power will scale ONLY with your #GOLD#mindpower.#WHITE#
 #RED#This talent uses mind critical strike chance.#WHITE#]]):format(talRadius, damDesc(self, DamageType.FIRE, talDamage), talPower) end,
 }
---will be changed, its just like forced gestalt except saves!
 newTalent {
     name = "Anguish", short_name = "MIC_ANGUISH",
     type = {"psionic/pain", 4},
