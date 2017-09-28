@@ -77,7 +77,7 @@ newTalent {
 	info = function(self, t)
 		pow = t.getPowersBoost(self, t)
 		save = t.getMentalBoost(self, t)
-		return ([[Your mind is like that of your ancestors, strong and acclimated to both magic and mind powers.
+		return ([[Your mind is like that of your ancestors, both resistant and acclimated to magic and mind powers.
 Increases your mindpower and spellpower by %d and your mental save by %d.]]):format(pow, save)
 	end,
 }

@@ -338,7 +338,7 @@ newEffect {
     type = "mental",
     subtype = {debuff = true},
     status = "detrimental",
-    parameters = {power = 10},
+    parameters = {power = 10, dam = 10, turn = 0},
     on_gain = function(self, err) return "#Target# is feeling pain greater than anything else!", "+Anguish" end,
     on_lose = function(self, err) return "#Target# feels normal again.", "-Anguish" end,
     activate = function(self, eff)
@@ -346,13 +346,48 @@ newEffect {
         eff.spell = self:addTemporaryValue("combat_spellpower", -eff.power)
         eff.physical = self:addTemporaryValue("combat_dam", -eff.power)
     end,
+    on_timeout = function(self, eff)
+        turn += 1
+    end,
     deactivate = function(self, eff)
         self:removeTemporaryValue("combat_mindpower", eff.mental)
         self:removeTemporaryValue("combat_spellpower", eff.spell)
         self:removeTemporaryValue("combat_dam", eff.physical)
+        --do projections
+        DamageType:get(DamageType.DARKNESS).projector(eff.src, self.x, self.y, DamageType.DARKNESS, (eff.dam * turn)^0.8) --might need to some minor scale backs here
+        game.level.map:particleEmitter(tmp_target.x, tmp_target.y, 1, "generic_discharge", {rm=225, rM=255, gm=225, gM=255, bm=0, bM=0, am=35, aM=90}) --TODO check what this looks like
+
     end,
 }
 
+newEffect {
+    name = "MIC_ANGUISH_POS_EFF", image = "talents/MIC_ANGUISH",
+    desc = "Anguish",
+    long_desc = function(self, eff) return("You have stolen your target's power, increasing all of your powers and saves by %d."):format(eff.power) end,
+    type = "mental",
+    subtype = "beneficial",
+    parameters = {power = 10},
+    on_gain = function(self, err) return "#Target# has stolen their targets power!", "+Anguish" end,
+    on_lose = function(self, err) return "#Target# feels normal again.", "-Anguish" end,
+    activate = function(self, eff)
+        eff.mental = self:addTemporaryValue("combat_mindpower", eff.power)
+        eff.spell = self:addTemporaryValue("combat_spellpower", eff.power)
+        eff.physical = self:addTemporaryValue("combat_dam", eff.power)
+        eff.mentalS = self:addTemporaryValue("combat_mentalresist", eff.power)
+        eff.spellS = self:addTemporaryValue("combat_spellresist", eff.power)
+        eff.physicalS = self.addTemporaryValue("combat_physresist", eff.power)
+
+    end,
+    deactivate = function(self, eff)
+        self:removeTemporaryValue("combat_mindpower", eff.mental)
+        self:removeTemporaryValue("combat_spellpower", eff.spell)
+        self:removeTemporaryValue("combat_dam", eff.physical)
+        self:removeTemporaryValue("combat_mentalresist", eff.power)
+        self:removeTemporaryValue("combat_spellresist", eff.power)
+        self:removeTemporaryValue("combat_physresist", eff.power)
+    end,
+
+}
 
 --[[
 

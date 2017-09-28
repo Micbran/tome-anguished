@@ -65,3 +65,7 @@ Erase upper damage scaling lowered from 200 to 150 at 100SP and TL 5
 Erase's min cooldown has been increased to 3 from 2.
 Doom now slows global speed like erode used to.
 Cleaned up Unnatural Limit's desc a bit
+Kill has been reworked, lower CD and more damage, deals bonus damage to enemies below 50% life and is instant. Not instant above 50% max life.
+Slight cleanup/documentation to duskbringer and dark charge
+Searing pain desc changed a little, also now actually checks confusion resist
+Anguish complete rework, decreases enemy powers and increases own while also increasing saves, debuff does damage upon expiration
