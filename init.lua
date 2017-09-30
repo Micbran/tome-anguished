@@ -45,7 +45,7 @@ The Anguished have 6 unique talent trees:
     Adds a few mind based artifacts, mostly tied to the theme of the Anguished (3 mindstars, one light armor)
 
     Special thanks to Razakai and StarKeep and a couple of others on the IRC channel for all the help!
-
+    Special thanks to Dienes for helping me out with a few ideas (namely mindstaff).
     Icons for Anguished done by Zerru.
 
         *Not like that. Don't make me explain the pun.]]

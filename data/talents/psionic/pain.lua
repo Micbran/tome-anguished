@@ -163,7 +163,7 @@ newTalent { --Searing Pain
         talRadius = self:getTalentRadius(t)
         talPower = t.getPower(self, t)
     return([[Unleash a ball of red, hot pain in radius %d, dealing %0.1f fire damage and attempting to apply confusion (power %d), using the higher of spellpower or mindpower for application.
-Damage scales with your #VIOLET#spellpower#WHITE# and #GOLD#mindpower#WHITE#, whilist the confusion power will scale ONLY with your #GOLD#mindpower.#WHITE#
+The damage scales with your #VIOLET#spellpower#WHITE# and #GOLD#mindpower#WHITE#, whilist the confusion power will scale ONLY with your #GOLD#mindpower.#WHITE#
 #RED#This talent uses mind critical strike chance.#WHITE#]]):format(talRadius, damDesc(self, DamageType.FIRE, talDamage), talPower) end,
 }
 newTalent {
@@ -201,6 +201,9 @@ newTalent {
         local talDur = t.getDuration(self, t)
         local talDam = t.getDamage(self, t)
         local talPower = t.getPower(self, t)
-        return([[]]):format()
+        return([[Inflict a curse of anguish on your target, lowering their powers by %d for %d. If this effect succeeds, your target's anguish will fuel you increasing your powers #BOLD#and#NORMAL# saves by that same amount (%d)
+Additionally when the effect on your target ends, it will deal %0.2f damage per turn it was on them, with diminishing returns.
+The damage and powers reduction will scale with your #VIOLET#spellpower#WHITE# and #GOLD#mindpower#WHITE#.
+This talent can critically strike (mind crit) increasing the amount of powers stolen.]]):format()
     end,
 }
