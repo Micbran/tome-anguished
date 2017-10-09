@@ -56,8 +56,9 @@ newTalent {
     info = function(self, t)
         talDam = t.getDamage(self, t)
         talDrain = t.getDrain(self, t)
-        return ([[Drain energy from your target's mind, dealing %0.1f mind damage and restoring %d%% of your max psi.
-The damage and percent drained will scale with your #GOLD#mindpower.#WHITE#]]):format(damDesc(self, DamageType.MIND, talDam), talDrain*100)
+        return ([[Drain energy from your target's mind, dealing %0.1f mind damage and restoring %d%% of your #BLUE#max psi#WHITE#.
+The damage and percent drained will scale with your #GOLD#mindpower.#WHITE#
+This talent uses mind crit.]]):format(damDesc(self, DamageType.MIND, talDam), talDrain*100)
     end,
 }
 
@@ -97,7 +98,7 @@ If your life is above 50%% at the time you use the talent then the duration of t
 The conversion ratio will increase with your #VIOLET#spellpower.#WHITE#
 This talent is instant.
 Current Shield Strength (without bonus shield from bonus shield from being under 50%% life): %d
-#RED#This talent cannot crit!#RED#]]):format(convert, talDur, 30*convert, currShield)
+#RED#This talent cannot crit!#WHITE#]]):format(convert, talDur, 30*convert, currShield)
     end,
 }
 
@@ -168,7 +169,7 @@ newTalent {
         talDam = t.getDamage(self, t)
         talVimDrain = t.getVimDrain(self, t)
         talRadius = self:getTalentRadius(t)
-        return ([[When activated, you will drain life and vim from enemies in a %d radius around you. Each turn, afflicted targets will take %0.1f darkness damage. You will heal for 25%% of the damage dealt and %0.1f vim will be restored every time a target is hit.
+        return ([[When activated, you will drain #RED#life#WHITE# and #BROWN#vim#WHITE# from enemies in a %d radius around you. Each turn, afflicted targets will take %0.1f darkness damage. You will heal for 25%% of the damage dealt and %0.1f vim will be restored every time a target is hit.
 The damage will scale with your #GOLD#mindpower#WHITE# and the amount of vim drained will scale with your #GOLD#spellpower.#WHITE#
 #RED#This talent drains 6 psi while active!#WHITE#]]):format(talRadius, damDesc(self, DamageType.DARKNESS, talDam), talVimDrain)
     end,

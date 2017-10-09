@@ -39,8 +39,9 @@ newTalent { --Might just be more powerful just because it doesn't have a drawbac
     no_unlearn_last = true,
     getMindpowerBoost = function(self, t) return math.min(self:combatTalentLimit(t, 70, 15, 45), self:combatTalentLimit(t, 0.6, 0.2, 0.4) * (-1*self:getVim() + self:getMaxVim())) end,
     getSpellpowerBoost = function(self, t) return math.min(self:combatTalentLimit(t, 70, 15, 45), self:combatTalentLimit(t, 0.6, 0.2, 0.4) *  (-1*self:getPsi() + self:getMaxPsi())) end,
-    --(self:getMaxVim()/math.max(1, self:getVim()))) Method one. Produces very high results at low resources.
-    getPowersLimit = function(self, t) return self:combatTalentLimit(t, 70, 15, 35) end, --Just an extra function for the info blurb.
+    getPowersLimit = function(self, t) return self:combatTalentLimit(t, 70, 15, 50) end, --Just an extra function for the info blurb.
+    reCooldown = function(self, t) return self:combatTalentScale(t, 15, 10, 7) end, --functions needed for rebalance
+    reGetDuration = function(self, t) return self:combatTalentScale(t, 4, 7, 11) end,
     callbackOnActBase = function(self, t) --Called every base turn
         local p = self.sustain_talents[t.id]
         if not p then return end
@@ -52,6 +53,18 @@ newTalent { --Might just be more powerful just because it doesn't have a drawbac
 
         p.spid = self:addTemporaryValue("combat_spellpower", spellPower)
         p.mpid = self:addTemporaryValue("combat_mindpower", mindPower)
+    end,
+    on_learn = function(self, t)
+        local lev = self:getTalentLevelRaw(t)
+        if lev == 1 then
+            self:learnTalent(self.T_MIC_REBALANCE, true, nil, {no_unlearn=true}) -- have to give a different talent to the player because you cant attach a passive to a sustain
+        end
+    end,
+    on_unlearn = function(self, t)
+        local lev = self:getTalentLevelRaw(t)
+        if lev == 0 then
+            self:unlearnTalent(self.T_MIC_REBALANCE)
+        end
     end,
     activate = function(self, t)
         return {}
@@ -65,9 +78,9 @@ newTalent { --Might just be more powerful just because it doesn't have a drawbac
         mindBoost = t.getMindpowerBoost(self, t)
         spellBoost = t.getSpellpowerBoost(self, t)
         limit = t.getPowersLimit(self, t)
-
         return([[You maintain a balance of powers within your body, increasing your #VIOLET#spellpower#WHITE# by %d, increasing the lower your psi is. Also, your #GOLD#mindpower#WHITE# is also increased by %d, further increasing depending on how low your vim is.
-The #VIOLET#spellpower#WHITE# and #GOLD#mindpower#WHITE# bonuses are limited to a maximum of %d.]]):format(spellBoost, mindBoost, limit)
+The #VIOLET#spellpower#WHITE# and #GOLD#mindpower#WHITE# bonuses are limited to a maximum of %d.
+Learning this talent will also allow you to use the talent Rebalance, giving you greater control of balance.]]):format(spellBoost, mindBoost, limit)
     end
 }
 
@@ -118,7 +131,6 @@ newTalent { --Credits to razakai. Casting a spell gives buff that makes next min
         talCool = t.cooldown(self, t)
         talPostMind = t.getPostMindTalent(self, t)
         talPostSpell = t.getPostSpellTalent(self, t)
-
         return ([[You learn to weave your spells with your mind powers. Whenever you cast a spell, you gain a buff for 5 turns that causes your next mind power to heal you for %0.1f.
 Whenever you cast a mind power, you gain a buff that causes your next spell to create a shield for %0.1f around yourself.
 The healing will scale with your #VIOLET#spellpower#WHITE# and the shield will scale with your #GOLD#mindpower#WHITE#.
@@ -162,7 +174,7 @@ newTalent { --Overcharged. Dislike. Mirrors the first talent, but doesn't bring 
         local spellSpeed = t.getSpellSpeed(self, t)
         local mindSpeed = t.getMindSpeed(self, t)
         local maxi = t.getMax(self, t)
-        return ([[The higher your stores of vim/psi are, the more "charged" you are, increasing your spell casting speed by %d%% and your mindcasting speed by %d%%. These bonuses will scale with the percentage of vim/psi in your pools, up to a max of %d%%.]]):format(spellSpeed*100, mindSpeed*100, maxi*100)
+        return ([[The higher your stores of #BROWN#vim#WHITE#/#BLUE#psi#WHITE# are, the more "charged" you are, increasing your spell casting speed by %d%% and your mindcasting speed by %d%%. These bonuses will scale with the percentage of vim/psi in your pools, up to a max of %d%%.]]):format(spellSpeed*100, mindSpeed*100, maxi*100)
     end,
 }
 --[[
@@ -200,9 +212,9 @@ newTalent{
         talDur = t.getDuration(self, t)
         if talAll == nil then talAll = 0 end
         if talDur == nil then talDur = 0 end
-        return ([[You muster up energy to push yourself past the limit of your body, increasing your all damage by up to %d%%and setting your vim, psi and life to their maximum values. Upon the effect's expiry, your vim and psi will be set to 10%% of their maximum values and your life will be set to 20%%.
-The all damage bonus will increase based on how low your vim and psi are when you activate the talent.
-The duration will be increased based on how low your life is upon activation.
+        return ([[You muster up energy to push yourself past the limit of your body, increasing your all damage by up to %d%%and setting your #BROWN#vim#WHITE#, #BLUE#psi#WHITE# and #RED#life#WHITE# to their maximum values. Upon the effect's expiry, your #BROWN#vim#WHITE# and #BLUE#psi#WHITE# will be set to 10%% of their maximum values and your #RED#life#WHITE# will be set to 20%%.
+The all damage bonus will increase based on how low your #BROWN#vim#WHITE# and #BLUE#psi#WHITE# are when you activate the talent.
+The duration will be increased based on how low your #RED#life#WHITE# is upon activation.
 Current all damage bonus: %d%%
 Current duration: %d]]):format(talAllCap(self, t), talAll, talDur)
     end,

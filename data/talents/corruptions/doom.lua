@@ -69,7 +69,7 @@ newTalent { --Erode
         local talDur = t.getDur(self, t)
 		powerBoost = applyPowerBonus(self)
         return([[Afflict your target with a blight that saps their life from them, dealing %0.1f blight damage per turn for %d turns.
-The blight damage will additionally drain vim, scaled by the target's rank.
+The blight damage will additionally drain #BROWN#vim#WHITE#, scaled by the target's rank.
 The damage will scale with your #VIOLET#spellpower.#WHITE# This talent uses spell crit, increasing the damage dealt.
 
 Additionally, every point put into talents in the Doom tree will increase the apply power of all talents within the tree. (Currently +%d)]]):format(damDesc(self, DamageType.BLIGHT, talDam), talDur, powerBoost)

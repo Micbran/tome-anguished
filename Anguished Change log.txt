@@ -68,4 +68,7 @@ Cleaned up Unnatural Limit's desc a bit
 Kill has been reworked, lower CD and more damage, deals bonus damage to enemies below 50% life and is instant. Not instant above 50% max life.
 Slight cleanup/documentation to duskbringer and dark charge
 Searing pain desc changed a little, also now actually checks confusion resist
-Anguish complete rework, decreases enemy powers and increases own while also increasing saves, debuff does damage upon expiration
+Anguish complete rework, decreases enemy powers and increases own while also increasing saves, debuff does damage upon expiration and crits if target is below 30% life. Death clock effect as well!
+Balance has gained a new effect, rebalance, as well as scaling slightly better with talent level
+Resources have been color coded (psi is blue, vim brown and life red)
+Mind Drain now mentions that it uses mind crit

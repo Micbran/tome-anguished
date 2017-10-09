@@ -170,7 +170,13 @@ if not Talents.talents_types_def["corruption/balance"] then
 	newTalentType{type="corruption/balance", name = "balance", allow_random=true, no_silence=true, is_spell=true, description = "Techniques used to keep the balance between Vim and Psi." }
 	load("/data-anguish/talents/corruptions/balance.lua")
 end
+
 if not Talents.talents_types_def["corruption/doom"] then
 	newTalentType{type="corruption/doom", name = "doom", allow_random=true, no_silence=true, is_spell=true, description = "Bring your enemies closer to their demise with long-lasting curses." }
 	load("/data-anguish/talents/corruptions/doom.lua")
+end
+
+if not Talents.talents_types_def["corruption/mic-other"] then
+	newTalentType{ allow_random=true, type="corruption/mic-other", is_mind = true, name = "balance", description = "Other talents." }
+	load("/data-anguish/talents/corruptions/mic-other.lua")
 end
