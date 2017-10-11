@@ -202,8 +202,8 @@ newTalent {
         local talDam = t.getDamage(self, t)
         local talPower = t.getPower(self, t)
         return([[Inflict a curse of anguish on your target, lowering their powers by %d for %d. If this effect succeeds, your target's anguish will fuel you increasing your powers #BOLD#and#NORMAL# saves by that same amount (%d)
-Additionally when the effect on your target ends, it will deal %0.2f darkness damage multiplied by the number of turns it was on them, with diminishing returns.
+Additionally when the effect on your target ends, it will deal %0.2f darkness damage multiplied by the number of turns it was on them, with diminishing returns. This damage will automatically crit if the target is below 50% life when the effect expires, but the damage can mind crit normally as well.
 The damage and powers reduction will scale with your #VIOLET#spellpower#WHITE# and #GOLD#mindpower#WHITE#.
-This talent can critically strike (mind crit) increasing the amount of powers stolen.]]):format(talPower, talDur, talPower,damDesc(self, DamageType.DARKNESS, talDam))
+This talent can critically strike (mind crit) on cast, increasing the amount of powers stolen.]]):format(talPower, talDur, talPower,damDesc(self, DamageType.DARKNESS, talDam))
     end,
 }

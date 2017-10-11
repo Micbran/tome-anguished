@@ -72,3 +72,4 @@ Anguish complete rework, decreases enemy powers and increases own while also inc
 Balance has gained a new effect, rebalance, as well as scaling slightly better with talent level
 Resources have been color coded (psi is blue, vim brown and life red)
 Mind Drain now mentions that it uses mind crit
+Defiled Mind has been reworked, now gives vim on mind cast and psi on spell cast, still scales the same

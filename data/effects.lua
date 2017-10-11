@@ -330,7 +330,19 @@ newEffect {
 		self:removeTemporaryValue("combat_physresist", eff.physical)
     end,
 }
+--[[--- Add a new flying text
+-- @int x x position
+-- @int y y position
+-- @int[opt=10] duration
+-- @param[type=?number] xvel horizontal velocity
+-- @param[type=?number] yvel vertical velocity
+-- @string str what the text says
+-- @param[type=?table] color color of the text, defaults to colors.White
+-- @param[type=?boolean] bigfont use the big font?
+-- @return FlyingText]]
+--game.flyers:add(x, y, duration, xvel, yvel, str, color, bigfont)
 
+--info needed for flying text
 newEffect {
     name = "MIC_ANGUISH_EFF", image = "talents/MIC_ANGUISH",
     desc = "Anguish",
@@ -347,16 +359,25 @@ newEffect {
         eff.physical = self:addTemporaryValue("combat_dam", -eff.power)
     end,
     on_timeout = function(self, eff)
+        --we're gonna try and get flying text to work for the "Death Clock" effect
+        --okay so one of the issues here is getting the duration of the talent and making count backwards, not really hard, just not "usual"
+        --we also need the target x and y (which isn't too hard, since we do have self and everything is else is pretty simple)
         turn += 1
+        local selfX, selfY = game.level.map:getTileToScreen(self.x, self.y, true) --grab x and y real easy
+        game.flyers:add(selfX, selfY, 30, 0.2, 1, eff.duration, colors.RED, true) --selfX for x pos of target, selfY, pretty self explantory, abritary duration of 30 for duration, im probably gonna need to offset
     end,
     deactivate = function(self, eff)
         self:removeTemporaryValue("combat_mindpower", eff.mental)
         self:removeTemporaryValue("combat_spellpower", eff.spell)
         self:removeTemporaryValue("combat_dam", eff.physical)
         --do projections
-        DamageType:get(DamageType.DARKNESS).projector(eff.src, self.x, self.y, DamageType.DARKNESS, (eff.dam * turn)^0.8) --might need to some minor scale backs here
+        --src.turn_procs.auto_mind_crit = true
+        if self.life < self.max_life/2 then
+            eff.src.turn_procs.auto_mind_crit = true
+        end
+        DamageType:get(DamageType.DARKNESS).projector(eff.src, self.x, self.y, DamageType.DARKNESS, eff.src:mindCrit((eff.dam * turn)^0.8)) --might need to some minor scale backs here
+        eff.src.turn_procs.auto_mind_crit = false
         game.level.map:particleEmitter(tmp_target.x, tmp_target.y, 1, "generic_discharge", {rm=225, rM=255, gm=225, gM=255, bm=0, bM=0, am=35, aM=90}) --TODO check what this looks like
-
     end,
 }
 

@@ -26,7 +26,7 @@ Unending Suffering: Heal for %%d of damage dealt. Very low, like 1, 2, 3, 4, 5. 
 
 ]]
 
-newTalent { --dislike this ability. Very boring.
+newTalent { --reworked to give vim on mindpower cast and psi on spell cast
     name = "Defiled Mind", short_name = "MIC_DEFILED_MIND",
     type = {"corruption/defiled-mind", 1},
     mode = "passive",
@@ -34,16 +34,20 @@ newTalent { --dislike this ability. Very boring.
     points = 5,
     vimGain = function(self, t) return self:combatTalentStatDamage(t, "wil", 0.1, 2.0) end,
     psiGain = function(self, t) return self:combatTalentStatDamage(t, "mag", 0.5, 5.0) end,
-    callbackOnKill = function(self, t, death_note)
-        --Put in a log message? On kill would be repetitive.
-        self:incPsi(t.vimGain(self, t))
-        self:incVim(t.psiGain(self, t))
+    callbackOnTalentPost = function(self, t, ab, ret, silent)
+        if ab.is_mind then
+            self:incVim(t.psiGain(self, t))
+        end
+        if ab.is_spell then
+            self:incPsi(t.vimGain(self, t))
+        end
     end,
     info = function(self, t)
         vim = t.vimGain(self, t)
         psi = t.psiGain(self, t)
-        return ([[After every kill, your mind consumes every last bit of your enemies' life, giving you an extra %0.1f psi per kill and and extra %0.1f vim per kill.
-The amount of vim per kill will scale with your willpower stat and the amount of psi per kill will scale with your magic stat.]]):format(psi, vim)
+        return ([[Your excess energies from your dark talents feed back into yourself.
+Whenever you cast a spell you gain %0.1f #BLUE#psi#WHITE# and whenever you cast a mindpower you gain %0.1f #BROWN#vim#WHITE#.
+The #BLUE#psi#WHITE# gained will scale with your #VIOLET#magic#WHITE# and the #BROWN#vim#WHITE# gained will scale with your #GOLD#willpower#WHITE#.]]):format(psi, vim)
     end,
 }
 
